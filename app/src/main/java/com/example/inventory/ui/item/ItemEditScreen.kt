@@ -60,9 +60,9 @@ fun ItemEditScreen(
         },
         modifier = modifier
     ) { innerPadding ->
-        ItemEntryBody(
-            itemUiState = viewModel.itemUiState,
-            onItemValueChange = { },
+        GameEntryBody(
+            gameUiState = viewModel.gameUiState,
+            onGameValueChange = { },
             onSaveClick = { },
             modifier = Modifier
                 .padding(
