@@ -50,7 +50,7 @@ import java.util.Locale
 
 object ItemEntryDestination : NavigationDestination {
     override val route = "item_entry"
-    override val titleRes = R.string.item_entry_title
+    override val titleRes = R.string.game_entry_title
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -127,7 +127,7 @@ fun GameInputForm(
         OutlinedTextField(
             value = gameDetails.name,
             onValueChange = { onValueChange(gameDetails.copy(name = it)) },
-            label = { Text(stringResource(R.string.item_name_req)) },
+            label = { Text(stringResource(R.string.game_name_req)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -141,7 +141,7 @@ fun GameInputForm(
             value = gameDetails.price,
             onValueChange = { onValueChange(gameDetails.copy(price = it)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            label = { Text(stringResource(R.string.item_price_req)) },
+            label = { Text(stringResource(R.string.game_price_req)) },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,

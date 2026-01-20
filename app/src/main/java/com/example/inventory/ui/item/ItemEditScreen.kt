@@ -37,7 +37,7 @@ import com.example.inventory.ui.theme.InventoryTheme
 
 object ItemEditDestination : NavigationDestination {
     override val route = "item_edit"
-    override val titleRes = R.string.edit_item_title
+    override val titleRes = R.string.edit_game_title
     const val itemIdArg = "itemId"
     val routeWithArgs = "$route/{$itemIdArg}"
 }

@@ -23,7 +23,7 @@ import androidx.room.PrimaryKey
 /**
  * Entity data class represents a single row in the database.
  */
-@Entity(tableName = "items")
+@Entity(tableName = "games")
 data class Game(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

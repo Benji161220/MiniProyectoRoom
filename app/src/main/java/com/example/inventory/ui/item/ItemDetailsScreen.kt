@@ -60,7 +60,7 @@ import com.example.inventory.ui.theme.InventoryTheme
 
 object ItemDetailsDestination : NavigationDestination {
     override val route = "item_details"
-    override val titleRes = R.string.item_detail_title
+    override val titleRes = R.string.game_detail_title
     const val itemIdArg = "itemId"
     val routeWithArgs = "$route/{$itemIdArg}"
 }
@@ -88,7 +88,7 @@ fun ItemDetailsScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(R.string.edit_item_title),
+                    contentDescription = stringResource(R.string.edit_game_title),
                 )
             }
         }, modifier = modifier
@@ -173,7 +173,7 @@ fun ItemDetails(
             )
         ) {
             ItemDetailsRow(
-                labelResID = R.string.item,
+                labelResID = R.string.game,
                 itemDetail = item.name,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
