@@ -77,6 +77,7 @@ data class GameDetails(
     val name: String = "",
     val price: String = "",
     val rating: String = "",
+    val quantity: String = ""
 )
 
 /**
@@ -88,7 +89,8 @@ fun GameDetails.toGame(): Game = Game(
     id = id,
     name = name,
     price = price.toDoubleOrNull() ?: 0.0,
-    rating = rating.toFloatOrNull() ?: 0f
+    rating = rating.toFloatOrNull() ?: 0f,
+    quantity = quantity.toIntOrNull() ?: 0
 )
 
 fun Game.formatedPrice(): String {
@@ -110,5 +112,6 @@ fun Game.toGameDetails(): GameDetails = GameDetails(
     id = id,
     name = name,
     price = price.toString(),
-    rating = rating.toString()
+    rating = rating.toString(),
+    quantity = quantity.toString()
 )

@@ -42,6 +42,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -52,9 +53,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.Game
+import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 
@@ -70,8 +73,10 @@ object ItemDetailsDestination : NavigationDestination {
 fun ItemDetailsScreen(
     navigateToEditItem: (Int) -> Unit,
     navigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ItemDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val uiState = viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
             InventoryTopAppBar(
@@ -96,7 +101,10 @@ fun ItemDetailsScreen(
         ItemDetailsBody(
             itemDetailsUiState = ItemDetailsUiState(),
             onSellItem = { },
-            onDelete = { },
+            onDelete = {
+                viewModel.deleteGame()
+                navigateBack()
+            },
             modifier = Modifier
                 .padding(
                     start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
@@ -181,7 +189,7 @@ fun ItemDetails(
             )
             ItemDetailsRow(
                 labelResID = R.string.quantity_in_stock,
-                itemDetail = item.price.toString(),
+                itemDetail = item.quantity.toString(),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )

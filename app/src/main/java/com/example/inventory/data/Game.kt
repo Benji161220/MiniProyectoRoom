@@ -29,5 +29,6 @@ data class Game(
     val id: Int = 0,
     val name: String,
     val rating: Float,
-    val price: Double
+    val price: Double,
+    val quantity: Int
 )
