@@ -24,10 +24,10 @@ import androidx.room.PrimaryKey
  * Entity data class represents a single row in the database.
  */
 @Entity(tableName = "items")
-data class Item(
+data class Game(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val price: Double,
-    val quantity: Int
+    val rating: Float,
+    val price: Double
 )

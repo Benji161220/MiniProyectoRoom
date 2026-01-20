@@ -20,81 +20,95 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.inventory.data.Item
+import androidx.lifecycle.viewModelScope
+import com.example.inventory.data.Game
+import com.example.inventory.data.GamesRepository
+import kotlinx.coroutines.launch
 import java.text.NumberFormat
 
 /**
- * ViewModel to validate and insert items in the Room database.
+ * ViewModel to validate and insert games in the Room database.
  */
-class ItemEntryViewModel : ViewModel() {
+class GameEntryViewModel(private val gamesRepository: GamesRepository) : ViewModel() {
 
     /**
-     * Holds current item ui state
+     * Holds current game ui state
      */
-    var itemUiState by mutableStateOf(ItemUiState())
+    var gameUiState by mutableStateOf(GameUiState())
         private set
 
     /**
-     * Updates the [itemUiState] with the value provided in the argument. This method also triggers
+     * Updates the [gameUiState] with the value provided in the argument. This method also triggers
      * a validation for input values.
      */
-    fun updateUiState(itemDetails: ItemDetails) {
-        itemUiState =
-            ItemUiState(itemDetails = itemDetails, isEntryValid = validateInput(itemDetails))
+    fun updateUiState(gameDetails: GameDetails) {
+        gameUiState =
+            GameUiState(itemDetails = gameDetails, isEntryValid = validateInput(gameDetails))
     }
 
-    private fun validateInput(uiState: ItemDetails = itemUiState.itemDetails): Boolean {
+    /**
+     * Saves the current game to the database
+     */
+    fun saveGame() {
+        if (validateInput()) {
+            viewModelScope.launch {
+                gamesRepository.insertGame(gameUiState.itemDetails.toGame())
+            }
+        }
+    }
+
+    private fun validateInput(uiState: GameDetails = gameUiState.itemDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
+            name.isNotBlank() && price.isNotBlank() && rating.isNotBlank()
         }
     }
 }
 
 /**
- * Represents Ui State for an Item.
+ * Represents Ui State for a Game.
  */
-data class ItemUiState(
-    val itemDetails: ItemDetails = ItemDetails(),
+data class GameUiState(
+    val itemDetails: GameDetails = GameDetails(),
     val isEntryValid: Boolean = false
 )
 
-data class ItemDetails(
+data class GameDetails(
     val id: Int = 0,
     val name: String = "",
     val price: String = "",
-    val quantity: String = "",
+    val rating: String = "",
 )
 
 /**
- * Extension function to convert [ItemDetails] to [Item]. If the value of [ItemDetails.price] is
+ * Extension function to convert [GameDetails] to [Game]. If the value of [GameDetails.price] is
  * not a valid [Double], then the price will be set to 0.0. Similarly if the value of
- * [ItemDetails.quantity] is not a valid [Int], then the quantity will be set to 0
+ * [GameDetails.rating] is not a valid [Float], then the rating will be set to 0f
  */
-fun ItemDetails.toItem(): Item = Item(
+fun GameDetails.toGame(): Game = Game(
     id = id,
     name = name,
     price = price.toDoubleOrNull() ?: 0.0,
-    quantity = quantity.toIntOrNull() ?: 0
+    rating = rating.toFloatOrNull() ?: 0f
 )
 
-fun Item.formatedPrice(): String {
+fun Game.formatedPrice(): String {
     return NumberFormat.getCurrencyInstance().format(price)
 }
 
 /**
- * Extension function to convert [Item] to [ItemUiState]
+ * Extension function to convert [Game] to [GameUiState]
  */
-fun Item.toItemUiState(isEntryValid: Boolean = false): ItemUiState = ItemUiState(
-    itemDetails = this.toItemDetails(),
+fun Game.toGameUiState(isEntryValid: Boolean = false): GameUiState = GameUiState(
+    itemDetails = this.toGameDetails(),
     isEntryValid = isEntryValid
 )
 
 /**
- * Extension function to convert [Item] to [ItemDetails]
+ * Extension function to convert [Game] to [GameDetails]
  */
-fun Item.toItemDetails(): ItemDetails = ItemDetails(
+fun Game.toGameDetails(): GameDetails = GameDetails(
     id = id,
     name = name,
     price = price.toString(),
-    quantity = quantity.toString()
+    rating = rating.toString()
 )

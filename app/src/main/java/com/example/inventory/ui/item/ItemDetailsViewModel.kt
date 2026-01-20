@@ -16,18 +16,31 @@
 
 package com.example.inventory.ui.item
 
+import GamesRepository
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.inventory.data.ItemsRepository
+import androidx.lifecycle.viewModelScope
+import com.example.inventory.data.Game
+import kotlinx.coroutines.launch
 
 /**
- * ViewModel to retrieve, update and delete an item from the [ItemsRepository]'s data source.
+ * ViewModel to retrieve, update and delete a game from the [GamesRepository]'s data source.
  */
 class ItemDetailsViewModel(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val gamesRepository: GamesRepository
 ) : ViewModel() {
 
-    private val itemId: Int = checkNotNull(savedStateHandle[ItemDetailsDestination.itemIdArg])
+    private val gameId: Int = checkNotNull(savedStateHandle[ItemDetailsDestination.itemIdArg])
+
+    /**
+     * Deletes a game from the database
+     */
+    fun deleteGame(game: Game) {
+        viewModelScope.launch {
+            gamesRepository.deleteGame(game)
+        }
+    }
 
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
@@ -39,5 +52,5 @@ class ItemDetailsViewModel(
  */
 data class ItemDetailsUiState(
     val outOfStock: Boolean = true,
-    val itemDetails: ItemDetails = ItemDetails()
+    val itemDetails: GameDetails = GameDetails()
 )

@@ -21,26 +21,49 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.inventory.data.ItemsRepository
+import androidx.lifecycle.viewModelScope
+import com.example.inventory.data.GamesRepository
+import kotlinx.coroutines.launch
 
 /**
- * ViewModel to retrieve and update an item from the [ItemsRepository]'s data source.
+ * ViewModel to retrieve and update a game from the [GamesRepository]'s data source.
  */
 class ItemEditViewModel(
     savedStateHandle: SavedStateHandle,
+    private val gamesRepository: GamesRepository
 ) : ViewModel() {
 
     /**
-     * Holds current item ui state
+     * Holds current game ui state
      */
-    var itemUiState by mutableStateOf(ItemUiState())
+    var gameUiState by mutableStateOf(GameUiState())
         private set
 
-    private val itemId: Int = checkNotNull(savedStateHandle[ItemEditDestination.itemIdArg])
+    private val gameId: Int = checkNotNull(savedStateHandle[ItemEditDestination.itemIdArg])
 
-    private fun validateInput(uiState: ItemDetails = itemUiState.itemDetails): Boolean {
+    /**
+     * Updates the [gameUiState] with the value provided in the argument. This method also triggers
+     * a validation for input values.
+     */
+    fun updateUiState(gameDetails: GameDetails) {
+        gameUiState =
+            GameUiState(itemDetails = gameDetails, isEntryValid = validateInput(gameDetails))
+    }
+
+    /**
+     * Updates the current game in the database
+     */
+    fun saveGame() {
+        if (validateInput()) {
+            viewModelScope.launch {
+                gamesRepository.updateGame(gameUiState.itemDetails.toGame())
+            }
+        }
+    }
+
+    private fun validateInput(uiState: GameDetails = gameUiState.itemDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && price.isNotBlank() && quantity.isNotBlank()
+            name.isNotBlank() && price.isNotBlank() && rating.isNotBlank()
         }
     }
 }

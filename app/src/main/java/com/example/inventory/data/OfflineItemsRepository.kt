@@ -1,19 +1,15 @@
-/*
- * Copyright (C) 2023 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import com.example.inventory.data.Game
+import com.example.inventory.data.GameDao
+import kotlinx.coroutines.flow.Flow
 
-package com.example.inventory.data
+class OfflineGamesRepository(private val gameDao: GameDao) : GamesRepository {
+    override fun getAllGamesStream(): Flow<List<Game>> = gameDao.getAllGames()
 
-class OfflineItemsRepository : ItemsRepository
+    override fun getGameStream(id: Int): Flow<Game?> = gameDao.getGame(id)
+
+    override suspend fun insertGame(game: Game) = gameDao.insert(game)
+
+    override suspend fun deleteGame(game: Game) = gameDao.delete(game)
+
+    override suspend fun updateGame(game: Game) = gameDao.update(game)
+}

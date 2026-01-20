@@ -26,7 +26,7 @@ import com.example.inventory.InventoryApplication
 import com.example.inventory.ui.home.HomeViewModel
 import com.example.inventory.ui.item.ItemDetailsViewModel
 import com.example.inventory.ui.item.ItemEditViewModel
-import com.example.inventory.ui.item.ItemEntryViewModel
+import com.example.inventory.ui.item.GameEntryViewModel
 
 /**
  * Provides Factory to create instance of ViewModel for the entire Inventory app
@@ -36,24 +36,30 @@ object AppViewModelProvider {
         // Initializer for ItemEditViewModel
         initializer {
             ItemEditViewModel(
-                this.createSavedStateHandle()
+                this.createSavedStateHandle(),
+                inventoryApplication().container.gamesRepository
             )
         }
-        // Initializer for ItemEntryViewModel
+        // Initializer for GameEntryViewModel
         initializer {
-            ItemEntryViewModel()
+            GameEntryViewModel(
+                inventoryApplication().container.gamesRepository
+            )
         }
 
         // Initializer for ItemDetailsViewModel
         initializer {
             ItemDetailsViewModel(
-                this.createSavedStateHandle()
+                this.createSavedStateHandle(),
+                inventoryApplication().container.gamesRepository
             )
         }
 
         // Initializer for HomeViewModel
         initializer {
-            HomeViewModel()
+            HomeViewModel(
+                inventoryApplication().container.gamesRepository
+            )
         }
     }
 }
@@ -64,3 +70,4 @@ object AppViewModelProvider {
  */
 fun CreationExtras.inventoryApplication(): InventoryApplication =
     (this[AndroidViewModelFactory.APPLICATION_KEY] as InventoryApplication)
+
