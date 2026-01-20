@@ -183,7 +183,7 @@ private fun InventoryItem(
                 )
             }
             Text(
-                text = stringResource(R.string.in_stock, item.rating),
+                text = stringResource(R.string.in_stock, item.rating.toInt()),
                 style = MaterialTheme.typography.titleMedium
             )
         }
