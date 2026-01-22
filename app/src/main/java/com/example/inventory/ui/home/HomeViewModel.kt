@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -23,7 +22,7 @@ class HomeViewModel(
     val homeUiState: StateFlow<HomeUiState> =
         combine(
             gamesRepository.getAllGamesStream(),
-            sortAscending
+            settingsDataStore.sortAscendingFlow
         ) { games, ascending ->
             val sorted = if (ascending) {
                 games.sortedBy { it.name }

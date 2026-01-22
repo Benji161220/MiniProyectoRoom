@@ -13,7 +13,7 @@ class SettingsViewModel(
 ) : ViewModel() {
 
     val sortAscending: StateFlow<Boolean> =
-        dataStore.sort.stateIn(
+        dataStore.sortAscendingFlow.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
             true

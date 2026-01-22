@@ -22,6 +22,6 @@ class AppDataContainer(private val context: Context) : AppContainer {
         )
     }
     override val settingsDataStore: SettingsDataStore by lazy {
-        SettingsDataStore(context.dataStore)
+        SettingsDataStore(context)
     }
 }
