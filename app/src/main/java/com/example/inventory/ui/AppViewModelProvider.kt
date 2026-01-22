@@ -1,6 +1,5 @@
 package com.example.inventory.ui
 
-import android.app.Application
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -11,6 +10,7 @@ import com.example.inventory.ui.home.HomeViewModel
 import com.example.inventory.ui.item.ItemDetailsViewModel
 import com.example.inventory.ui.item.ItemEditViewModel
 import com.example.inventory.ui.item.GameEntryViewModel
+import com.example.inventory.ui.settings.SettingsViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
@@ -35,7 +35,13 @@ object AppViewModelProvider {
 
         initializer {
             HomeViewModel(
-                inventoryApplication().container.gamesRepository
+                inventoryApplication().container.gamesRepository,
+                inventoryApplication().container.settingsDataStore
+            )
+        }
+        initializer {
+            SettingsViewModel(
+                inventoryApplication().container.settingsDataStore
             )
         }
     }

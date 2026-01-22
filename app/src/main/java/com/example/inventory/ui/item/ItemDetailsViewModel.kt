@@ -50,9 +50,6 @@ class ItemDetailsViewModel(
     }
 }
 
-/**
- * UI state for ItemDetailsScreen
- */
 data class ItemDetailsUiState(
     val outOfStock: Boolean = true,
     val itemDetails: GameDetails = GameDetails()
