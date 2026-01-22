@@ -15,7 +15,6 @@ abstract class InventoryDatabase : RoomDatabase() {
         private var Instance: InventoryDatabase? = null
 
         fun getDatabase(context: Context): InventoryDatabase {
-            // if the Instance is not null, return it, otherwise create a new database instance.
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, InventoryDatabase::class.java, "item_database")
                     .fallbackToDestructiveMigration()
