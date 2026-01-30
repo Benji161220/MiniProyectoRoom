@@ -12,14 +12,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
+class GameViewModel(
     private val gamesRepository: GamesRepository,
     private val settingsDataStore: SettingsDataStore
 ) : ViewModel() {
 
     private val sortAscending = settingsDataStore.sortAscendingFlow
 
-    val homeUiState: StateFlow<HomeUiState> =
+    val gameUiState: StateFlow<GameUiState> =
         combine(
             gamesRepository.getAllGamesStream(),
             settingsDataStore.sortAscendingFlow
@@ -29,11 +29,11 @@ class HomeViewModel(
             } else {
                 games.sortedByDescending { it.name }
             }
-            HomeUiState(sorted)
+            GameUiState(sorted)
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
-            HomeUiState()
+            GameUiState()
         )
 
     fun toggleSortOrder() {
@@ -43,4 +43,4 @@ class HomeViewModel(
     }
 }
 
-data class HomeUiState(val itemList: List<Game> = listOf())
+data class GameUiState(val itemList: List<Game> = listOf())

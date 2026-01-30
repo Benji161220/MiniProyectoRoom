@@ -14,7 +14,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -84,7 +83,6 @@ fun ItemDetailsScreen(
     ) { innerPadding ->
         ItemDetailsBody(
             itemDetailsUiState = uiState,
-            onSellItem = { viewModel.reduceQuantityByOne() },
             onDelete = {
                 viewModel.deleteGame()
                 navigateBack()
@@ -103,7 +101,6 @@ fun ItemDetailsScreen(
 @Composable
 private fun ItemDetailsBody(
     itemDetailsUiState: ItemDetailsUiState,
-    onSellItem: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -117,14 +114,7 @@ private fun ItemDetailsBody(
             item = itemDetailsUiState.itemDetails.toGame(),
             modifier = Modifier.fillMaxWidth()
         )
-        Button(
-            onClick = onSellItem,
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.small,
-            enabled = true
-        ) {
-            Text(stringResource(R.string.sell))
-        }
+
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -172,8 +162,8 @@ fun ItemDetails(
                 )
             )
             ItemDetailsRow(
-                labelResID = R.string.quantity_in_stock,
-                itemDetail = stringResource(R.string.quantity_in_stock, item.quantity),
+                labelResID = R.string.rating,
+                itemDetail = stringResource(R.string.quantity_in_stock, item.rating),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
@@ -233,7 +223,6 @@ fun ItemDetailsScreenPreview() {
                 outOfStock = true,
                 itemDetails = GameDetails(1, "The Last of Us", "$20", "10")
             ),
-            onSellItem = {},
             onDelete = {}
         )
     }

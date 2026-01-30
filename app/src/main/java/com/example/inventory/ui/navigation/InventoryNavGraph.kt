@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.inventory.ui.home.HomeDestination
-import com.example.inventory.ui.home.HomeScreen
+import com.example.inventory.ui.home.GameScreen
 import com.example.inventory.ui.item.ItemDetailsDestination
 import com.example.inventory.ui.item.ItemDetailsScreen
 import com.example.inventory.ui.item.ItemEditDestination
@@ -27,7 +27,7 @@ fun InventoryNavHost(
         modifier = modifier
     ) {
         composable(route = HomeDestination.route) {
-            HomeScreen(
+            GameScreen(
                 navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },
                 navigateToItemUpdate = {
                     navController.navigate("${ItemDetailsDestination.route}/${it}")

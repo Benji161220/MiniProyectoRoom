@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -50,14 +51,14 @@ object HomeDestination : NavigationDestination {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun GameScreen(
     navigateToItemEntry: () -> Unit,
     navigateToItemUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: GameViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val homeUiState by viewModel.homeUiState.collectAsState()
+    val homeUiState by viewModel.gameUiState.collectAsState()
 
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -68,7 +69,7 @@ fun HomeScreen(
                 scrollBehavior = scrollBehavior
             )
             IconButton(onClick = {viewModel.toggleSortOrder()}) {
-                Icon(Icons.Default.Star, contentDescription = "Cambiar orden")
+                Icon(Icons.Default.MoreVert, contentDescription = "Cambiar orden")
             }
         },
         floatingActionButton = {
@@ -84,7 +85,7 @@ fun HomeScreen(
             }
         },
     ) { innerPadding ->
-        HomeBody(
+        GameBody(
             itemList = homeUiState.itemList,
             onItemClick = navigateToItemUpdate,
             modifier = modifier.fillMaxSize(),
@@ -94,7 +95,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeBody(
+private fun GameBody(
     itemList: List<Game>,
     onItemClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
@@ -177,9 +178,9 @@ private fun InventoryItem(
 
 @Preview(showBackground = true)
 @Composable
-fun HomeBodyPreview() {
+fun GameBodyPreview() {
     InventoryTheme {
-        HomeBody(listOf(
+        GameBody(listOf(
             Game(1, "Game", 4.5f, 100.0, 1), Game(2, "Pen", 3.0f, 200.0, 2), Game(3, "TV", 4.0f, 300.0, 3)
         ), onItemClick = {})
     }
@@ -187,9 +188,9 @@ fun HomeBodyPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeBodyEmptyListPreview() {
+fun GameBodyEmptyListPreview() {
     InventoryTheme {
-        HomeBody(listOf(), onItemClick = {})
+        GameBody(listOf(), onItemClick = {})
     }
 }
 
